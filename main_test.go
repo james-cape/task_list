@@ -4,6 +4,8 @@ import (
   "os"
   "log"
   "testing"
+  "net/http"
+  "net/http/httptest"
 )
 
 // Sets application we want to test as 'a'
@@ -43,3 +45,16 @@ CREATE TABLE IF NOT EXISTS tasks
   completed BOOLEAN NOT NULL,
   description VARCHAR(255) NOT NULL
 )`
+
+func executeRequest(req *http.Request) *httptest.ResponseRecorder {
+  rr := httptest.NewRecorder()
+  a.Router.ServeHTTP(rr, req)
+
+  return rr
+}
+
+func checkResponseCode(t *testing.T, expected, actual int) {
+  if expected != actual {
+    t.Errorf("Expected response code %d. Got %d\n", expected, actual)
+  }
+}
