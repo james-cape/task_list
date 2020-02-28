@@ -1,0 +1,31 @@
+package main
+
+import (
+  "database/sql"
+  "fmt"
+  "log"
+
+  "github.com/gorilla/mux"
+  _ "github.com/go-sql-driver/mysql"
+)
+
+type App struct {
+  Router *mux.Router
+  DB     *sql.DB
+}
+
+// Creates the database connection and establishes routes
+func (a *App) Initialize(user, password, dbname string) {
+  connectionString := fmt.Sprintf("%s:%s@/%s", user, password, dbname)
+
+  var err error
+  a.DB, err = sql.Open("mysql", connectionString)
+  if err != nil {
+    log.Fatal(err)
+  }
+
+  a.Router = mux.NewRouter()
+}
+
+// Starts the application
+func (a * App) Run(addr string) { }
