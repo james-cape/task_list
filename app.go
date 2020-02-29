@@ -42,6 +42,7 @@ func (a *App) initializeRoutes() {
   a.Router.HandleFunc("/task", a.createTask).Methods("POST")
   a.Router.HandleFunc("/task/{id:[0-9]+}", a.getTask).Methods("GET")
   a.Router.HandleFunc("/task/{id:[0-9]+}", a.deleteTask).Methods("DELETE")
+  a.Router.HandleFunc("/task/{id:[0-9]+}", a.updateTask).Methods("PUT")
 }
 
 // Response Helpers
