@@ -95,7 +95,7 @@ func TestGetTask(t *testing.T) {
   clearTable()
   addTasks(1)
 
-  req, _ := http.NewRequest("GET", "task/1", nil)
+  req, _ := http.NewRequest("GET", "/task/1", nil)
   response := executeRequest(req)
 
   checkResponseCode(t, http.StatusOK, response.Code)
