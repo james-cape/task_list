@@ -93,3 +93,20 @@ func (a *App) createTask(w http.ResponseWriter, r *http.Request) {
 
   respondWithJSON(w, http.StatusCreated, t)
 }
+
+func (a *App) deleteTask(w http.ResponseWriter, r *http.Request) {
+  vars := mux.Vars(r)
+  id, err := strconv.Atoi(vars["id"])
+  if err != nil {
+    respondWithError(w, http.StatusBadRequest, "Invalid task ID")
+    return
+  }
+
+  t := task{ID: id}
+  if err := t.deleteTask(a.DB); err != nil {
+    respondWithError(w, http.StatusInternalServerError, err.Error())
+    return
+  }
+
+  respondWithJSON(w, http.StatusOK, map[string]string{"result":"success"})
+}
