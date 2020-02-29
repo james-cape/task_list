@@ -7,6 +7,7 @@ import (
   "net/http"
   "net/http/httptest"
   "encoding/json"
+  "strconv"
 )
 
 // Sets application we want to test as 'a'
@@ -88,6 +89,27 @@ func TestGetNonExistentTask(t *testing.T) {
   }
 }
 
+func TestGetTask(t *testing.T) {
+  clearTable()
+  addTasks(1)
+
+  req, _ := http.NewRequest("GET", "task/1", nil)
+  response := executeRequest(req)
+
+  checkResponseCode(t, http.StatusOK, response.Code)
+}
+
+func addTasks(count int) {
+  if count < 1 {
+    count = 1
+  }
+
+  for i := 0; i < count; i++ {
+    statement := fmt.Sprintf("INSERT INTO tasks(description, completed) VALUES('%s', false)", ("Task " + strconv.Itoa(i+1)))
+    a.DB.Exec(statement)
+  }
+}
+
 func TestCreateTask(t *testing.T) {
   clearTable()
 
@@ -118,18 +140,15 @@ func TestDeleteTask(t *testing.T) {
   clearTable()
   addTasks(1)
 
-  req, _ := http.NewRequest("GET", "/tasks")
-  response_1 := executeRequest(req)
-
-  req, _ = http.NewRequest("DELETE", "task/1", nil)
+  req, _ := http.NewRequest("GET", "/task/1", nil)
   response := executeRequest(req)
-
   checkResponseCode(t, http.StatusOK, response.Code)
 
-  req, _ = http.NewRequest("GET", "/tasks")
-  response_2 := executeRequest(req)
+  req, _ = http.NewRequest("DELETE", "/task/1", nil)
+  response = executeRequest(req)
+  checkResponseCode(t, http.StatusOK, response.Code)
 
-  if response_1 != response_2 {
-    t.Errorf("Expected one task to be deleted and not found in the second request")
-  }  
+  req, _ = http.NewRequest("GET", "/task/1", nil)
+  response = executeRequest(req)
+  checkResponseCode(t, http.StatusNotFound, response.Code)
 }
