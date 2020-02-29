@@ -15,3 +15,9 @@ func (t *task) getTask(db *sql.DB) error {
   statement := fmt.Sprintf("SELECT description, completed FROM tasks WHERE id=%d", u.ID)
   return db.QueryRow(statement).Scan(&t.Description, &t.Completed))
 }
+
+func (t *task) deleteTask(db *sql.DB) error {
+  statement := fmt.Sprintf("DELETE FROM tasks WHERE id=%d", t.ID)
+  _, err := db.Exec(statement)
+  return err
+}
