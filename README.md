@@ -54,6 +54,7 @@ Navigate to localhost:8080/tasks
 ## Endpoints Available
 
 + [Create a Task](#create_task)
++ [Update a Task](#update_task)
 + [Get All Tasks](#get_all_tasks)
 + [Get Task](#get_a_task)
 + [Delete Task](#delete_a_task)
@@ -83,6 +84,32 @@ Status: 201 Created
     "id": 1,
     "completed": false,
     "description": "task description"
+}
+```
+
+## <a name="update_task"></a>Update a Task
+`http://localhost:8080/task/:id`
+
+A PUT request to `/task/:id` takes a body with an object of key:
+* `"completed":`
+
+Example Request:
+```
+PUT http://localhost:8080/task/1
+
+Body; raw, JSON(application/json):
+{
+	"completed": true
+}
+```
+
+Example Response:
+```
+Status: 200 OK
+{
+    "id": 1,
+    "completed": true,
+    "description": ""
 }
 ```
 
