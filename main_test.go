@@ -87,3 +87,29 @@ func TestGetNonExistentTask(t *testing.T) {
     t.Errorf("Expected the 'error' key of the response to be set to 'Task not found'. Got '%'", m["error"])
   }
 }
+
+func TestCreateTask(t *testing.T) {
+  clearTable()
+
+  payload := []byte(`{"description":"test task","completed":false}`)
+
+  req, _ := http.NewRequest("POST", "/task", bytes.NewBuffer(payload))
+  response := executeRequest(req)
+
+  checkResponseCode(t, http.StatusCreated, response.Code)
+
+  var m map[string]interface{}
+  json.Unmarshal(response.Body.Bytes(), &m)
+
+  if m["description"] != "test task" {
+    t.Errorf("Expected task description to be 'test task'. Got '%v'", m["description"])
+  }
+
+  if m["completed"] != false {
+    t.Errorf("Expected task completed to be 'false'. Got '%v'", m["completed"])
+  }
+
+  if m["id"] != 1.0 {
+    t.Errorf("Expected task ID to be '1'. Got '%v'", m["id"])
+  }
+}
