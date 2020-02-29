@@ -28,16 +28,19 @@ func (a *App) Initialize(user, password, dbname string) {
   }
 
   a.Router = mux.NewRouter()
+  a.initializeRoutes()
 }
 
 // Starts the application
-func (a * App) Run(addr string) { }
+func (a * App) Run(addr string) {
+  log.Fatal(http.ListenAndServe(addr, a.Router))
+}
 
 // Routes
 func (a *App) initializeRoutes() {
   a.Router.HandleFunc("/tasks", a.getTasks).Methods("GET")
   a.Router.HandleFunc("/task", a.createTask).Methods("POST")
-  a.Router.HandleFunc("/task/{id:[0-9]+}", a.getTask).Mthods("GET")
+  a.Router.HandleFunc("/task/{id:[0-9]+}", a.getTask).Methods("GET")
   a.Router.HandleFunc("/task/{id:[0-9]+}", a.deleteTask).Methods("DELETE")
 }
 
