@@ -107,6 +107,31 @@ func (a *App) createTask(w http.ResponseWriter, r *http.Request) {
   respondWithJSON(w, http.StatusCreated, t)
 }
 
+func (a *App) updateTask(w http.ResponseWriter, r *http.Request) {
+  vars := mux.Vars(r)
+  id, err := strconv.Atoi(vars["id"])
+  if err != nil {
+    respondWithError(w, http.StatusBadRequest, "Invalid task ID")
+    return
+  }
+
+  var t task
+  decoder := json.NewDecoder(r.Body)
+  if err := decoder.Decode(&t); err != nil {
+    respondWithError(w, http.StatusBadRequest, "Invalid request payload")
+    return
+  }
+  defer r.Body.Close()
+  t.ID = id
+
+  if err := t.updateTask(a.DB); err != nil {
+    respondWithError(w, http.StatusInternalServerError, err.Error())
+    return
+  }
+
+  respondWithJSON(w, http.StatusOK, t)
+}
+
 func (a *App) deleteTask(w http.ResponseWriter, r *http.Request) {
   vars := mux.Vars(r)
   id, err := strconv.Atoi(vars["id"])
