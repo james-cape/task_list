@@ -74,7 +74,7 @@ func (a *App) getTask(w http.ResponseWriter, r *http.Request) {
       default:
         respondWithError(w, http.StatusInternalServerError, err.Error())
       }
-      return
+    return
   }
 
   respondWithJSON(w, http.StatusOK, t)
