@@ -113,3 +113,23 @@ func TestCreateTask(t *testing.T) {
     t.Errorf("Expected task ID to be '1'. Got '%v'", m["id"])
   }
 }
+
+func TestDeleteTask(t *testing.T) {
+  clearTable()
+  addTasks(1)
+
+  req, _ := http.NewRequest("GET", "/tasks")
+  response_1 := executeRequest(req)
+
+  req, _ = http.NewRequest("DELETE", "task/1", nil)
+  response := executeRequest(req)
+
+  checkResponseCode(t, http.StatusOK, response.Code)
+
+  req, _ = http.NewRequest("GET", "/tasks")
+  response_2 := executeRequest(req)
+
+  if response_1 != response_2 {
+    t.Errorf("Expected one task to be deleted and not found in the second request")
+  }  
+}
