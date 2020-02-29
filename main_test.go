@@ -2,6 +2,8 @@ package main
 
 import (
   "os"
+  "fmt"
+  "bytes"
   "log"
   "testing"
   "net/http"
@@ -85,7 +87,7 @@ func TestGetNonExistentTask(t *testing.T) {
   var m map[string]string
   json.Unmarshal(response.Body.Bytes(), &m)
   if m["error"] != "Task not found" {
-    t.Errorf("Expected the 'error' key of the response to be set to 'Task not found'. Got '%'", m["error"])
+    t.Errorf("Expected the 'error' key of the response to be set to 'Task not found'. Got '%s'", m["error"])
   }
 }
 
