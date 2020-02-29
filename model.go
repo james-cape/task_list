@@ -2,7 +2,7 @@ package main
 
 import (
   "database/sql"
-  "errors"
+  "fmt"
 )
 
 type task struct {
@@ -11,6 +11,7 @@ type task struct {
   Description string  `json:"description"`
 }
 
-func (u *task) getTask(db *sql.DB) error {
-  return errors.New("Not implemented")
+func (t *task) getTask(db *sql.DB) error {
+  statement := fmt.Sprintf("SELECT description, completed FROM tasks WHERE id=%d", u.ID)
+  return db.QueryRow(statement).Scan(&t.Description, &t.Completed))
 }
