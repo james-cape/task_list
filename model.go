@@ -38,3 +38,26 @@ func (t *task) createTask(db *sql.DB) error {
 
   return nil
 }
+
+func getTasks(db *sql.DB) ([]task, error {
+  statement := fmt.Sprintf("SELECT id, description, completed FROM tasks")
+  rows, err := db.Query(statement)
+
+  if err != nil {
+    return nil, err
+  }
+
+  defer rows.Close()
+
+  tasks := []task{}
+
+  for rows.Next() {
+    var t task
+    if err := rows.Scan(&t.ID, &t.Description, &t.Completed); err != nil {
+      return nil, err
+    }
+    tasks = append(tasks, t)
+  }
+
+  return tasks, nil
+})
