@@ -66,3 +66,13 @@ func (a *App) getTask(w http.ResponseWriter, r *http.Request) {
 
   respondWithJSON(w, http.StatusOK, t)
 }
+
+func (a *App) getTasks(w http.ResponseWriter, r *http.Request) {
+  tasks, err := getTasks(a.DB)
+  if err != nil {
+    respondWithError(w, http.StatusInternalServerError, err.Error())
+    return
+  }
+
+  respondWithJSON(w, http.StatusOK, tasks)
+}
