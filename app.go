@@ -76,3 +76,20 @@ func (a *App) getTasks(w http.ResponseWriter, r *http.Request) {
 
   respondWithJSON(w, http.StatusOK, tasks)
 }
+
+func (a *App) createTask(w http.ResponseWriter, r *http.Request) {
+  var t task
+  decoder := json.NewDecoder(r.Body)
+  if err := decoder.Decode(&t); err != nil {
+    respondWithError(w, http.StatusBadRequest, "Invalid request payload")
+    return
+  }
+  defer r.Body.Close()
+
+  if err := t.createTask(a.DB); err != nil {
+    respondWithError(w, http.StatusInternalServerError, err.Error())
+    return
+  }
+
+  respondWithJSON(w, http.StatusCreated, t)
+}
