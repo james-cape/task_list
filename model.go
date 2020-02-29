@@ -21,3 +21,20 @@ func (t *task) deleteTask(db *sql.DB) error {
   _, err := db.Exec(statement)
   return err
 }
+
+func (t *task) createTask(db *sql.DB) error {
+  statement := fmt.Sprintf("INSERT INTO tasks(description, completed) VALUES('%s', %b)", t.Description, T.Completed)
+  _, err := db.Exec(statement)
+
+  if err != nil {
+    return err
+  }
+
+  err = db.QueryRow("SELECT LAST_INSERT_ID()").Scan(&t.ID)
+
+  if err != nil {
+    return err
+  }
+
+  return nil
+}
