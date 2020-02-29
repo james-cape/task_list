@@ -39,6 +39,12 @@ func (t *task) createTask(db *sql.DB) error {
   return nil
 }
 
+func (t *task) updateTask(db *sql.DB) error {
+  statement := fmt.Sprintf("UPDATE tasks SET completed=%t WHERE id=%d", t.Completed, t.ID)
+  _, err := db.Exec(statement)
+  return err
+}
+
 func getTasks(db *sql.DB) ([]task, error) {
   statement := fmt.Sprintf("SELECT id, description, completed FROM tasks")
   rows, err := db.Query(statement)
