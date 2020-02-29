@@ -33,6 +33,15 @@ func (a *App) Initialize(user, password, dbname string) {
 // Starts the application
 func (a * App) Run(addr string) { }
 
+// Routes
+func (a *App) initializeRoutes() {
+  a.Router.HandleFunc("/tasks", a.getTasks).Methods("GET")
+  a.Router.HandleFunc("/task", a.createTask).Methods("POST")
+  a.Router.HandleFunc("/task/{id:[0-9]+}", a.getTask).Mthods("GET")
+  a.Router.HandleFunc("/task/{id:[0-9]+}", a.deleteTask).Methods("DELETE")
+}
+
+// Response Helpers
 func respondWithError(w http.ResponseWriter, code int, message string) {
   respondWithJSON(w, code, map[string]string{"error": message})
 }
@@ -45,6 +54,7 @@ func respondWithJSON(w http.ResponseWriter, code int, payload interface{}) {
   w.Write(response)
 }
 
+// Controllers
 func (a *App) getTask(w http.ResponseWriter, r *http.Request) {
   vars := mux.Vars(r)
   id, err := strconv.Atoi(vars["id"])
