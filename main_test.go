@@ -161,10 +161,6 @@ func TestUpdateTask(t *testing.T) {
     t.Errorf("Expected the id to remain the same(%v). Got %v", originalTask["id"], m["id"])
   }
 
-  if m["description"] != originalTask["description"] {
-    t.Errorf("Expected the description to remain the same (%v). Got %v", originalTask["description"], m["description"])
-  }
-
   if m["completed"] == originalTask["completed"] {
     t.Errorf("Expected completed to change from '%v' to '%v'. Got '%v'", originalTask["completed"], m["completed"], m["completed"])
   }
