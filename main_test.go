@@ -107,7 +107,7 @@ func addTasks(count int) {
   }
 
   for i := 0; i < count; i++ {
-    statement := fmt.Sprintf("INSERT INTO tasks(description, completed) VALUES('%s', false)", ("Task " + strconv.Itoa(i+1)))
+    statement := fmt.Sprintf("INSERT INTO tasks(description, completed) VALUES('%s', %t)", ("Task " + strconv.Itoa(i+1)), false)
     a.DB.Exec(statement)
   }
 }
@@ -130,7 +130,7 @@ func TestCreateTask(t *testing.T) {
   }
 
   if m["completed"] != false {
-    t.Errorf("Expected task completed to be 'false'. Got '%v'", m["completed"])
+    t.Errorf("Expected task completed to be 'false'. Got '%t'", m["completed"])
   }
 
   if m["id"] != 1.0 {

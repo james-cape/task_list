@@ -12,8 +12,8 @@ type task struct {
 }
 
 func (t *task) getTask(db *sql.DB) error {
-  statement := fmt.Sprintf("SELECT description, completed FROM tasks WHERE id=%d", u.ID)
-  return db.QueryRow(statement).Scan(&t.Description, &t.Completed))
+  statement := fmt.Sprintf("SELECT description, completed FROM tasks WHERE id=%d", t.ID)
+  return db.QueryRow(statement).Scan(&t.Description, &t.Completed)
 }
 
 func (t *task) deleteTask(db *sql.DB) error {
@@ -23,7 +23,7 @@ func (t *task) deleteTask(db *sql.DB) error {
 }
 
 func (t *task) createTask(db *sql.DB) error {
-  statement := fmt.Sprintf("INSERT INTO tasks(description, completed) VALUES('%s', %b)", t.Description, T.Completed)
+  statement := fmt.Sprintf("INSERT INTO tasks(description, completed) VALUES('%s', %t)", t.Description, t.Completed)
   _, err := db.Exec(statement)
 
   if err != nil {
@@ -39,7 +39,7 @@ func (t *task) createTask(db *sql.DB) error {
   return nil
 }
 
-func getTasks(db *sql.DB) ([]task, error {
+func getTasks(db *sql.DB) ([]task, error) {
   statement := fmt.Sprintf("SELECT id, description, completed FROM tasks")
   rows, err := db.Query(statement)
 
@@ -60,4 +60,4 @@ func getTasks(db *sql.DB) ([]task, error {
   }
 
   return tasks, nil
-})
+}
