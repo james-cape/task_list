@@ -6,6 +6,7 @@ import (
   "testing"
   "net/http"
   "net/http/httptest"
+  "encoding/json"
 )
 
 // Sets application we want to test as 'a'
@@ -69,5 +70,20 @@ func TestEmptyTable(t *testing.T) {
 
   if body := response.Body.String(); body != "[]" {
     t.Errorf("Expected an empty array. Got %s", body)
+  }
+}
+
+func TestGetNonExistentTask(t *testing.T) {
+  clearTable()
+
+  req, _ := http.NewRequest("GET", "/task/45", nil)
+  response := executeRequest(req)
+
+  checkResponseCode(t, http.StatusNotFound, response.Code)
+
+  var m map[string]string
+  json.Unmarshal(response.Body.Bytes(), &m)
+  if m["error"] != "Task not found" {
+    t.Errorf("Expected the 'error' key of the response to be set to 'Task not found'. Got '%'", m["error"])
   }
 }
