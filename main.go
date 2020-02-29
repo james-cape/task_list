@@ -21,5 +21,14 @@ func main() {
   a := App{}
   a.Initialize(db_username, db_password, "go_task_list")
 
-  a.Run(":8080")
+
+  port := os.Getenv("PORT")
+  if port == "" {
+      port = "8080" // Default port if not specified
+  }
+  // err := grace.Serve(":" + port, context.ClearHandler(http.DefaultServeMux))
+
+
+
+  a.Run(":" + port)
 }
