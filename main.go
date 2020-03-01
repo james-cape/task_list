@@ -23,7 +23,7 @@ func main() {
     // databasename = "go_task_list"
   // )
   var hostname = os.Getenv("DB_HOSTNAME")
-  var host_port = strconv.Atoi(os.Getenv("DB_SERVER"))
+  var host_port, _ = strconv.Atoi(os.Getenv("DB_SERVER"))
   var databasename = os.Getenv("DB_NAME")
   var username = os.Getenv("DB_USERNAME")
   var password = os.Getenv("DB_PASSWORD")
