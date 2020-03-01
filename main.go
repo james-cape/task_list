@@ -10,18 +10,12 @@ import (
 func init() {
   if os.Getenv("DATABASE_URL") != "" {
     log.Print("This environment is production")
-    log.Print("database url: " + os.Getenv("DATABASE_URL"))
   } else if err := godotenv.Load(); err != nil {
     log.Print("No .env file found")
   }
 }
 
 func main() {
-  // const (
-    // hostname = "localhost"
-    // host_port = 5432
-    // databasename = "go_task_list"
-  // )
   var hostname = os.Getenv("DB_HOSTNAME")
   var host_port, _ = strconv.Atoi(os.Getenv("DB_SERVER"))
   var databasename = os.Getenv("DB_NAME")
@@ -33,9 +27,8 @@ func main() {
       port = "8080" // Default port if not specified
   }
 
-    a := App{}
-    a.Initialize(host_port, hostname, username, password, databasename)
+  a := App{}
+  a.Initialize(host_port, hostname, username, password, databasename)
 
   a.Run(":" + port)
-
 }
