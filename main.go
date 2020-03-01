@@ -15,20 +15,22 @@ func init() {
 }
 
 func main() {
-  var db_username string = os.Getenv("DB_USERNAME")
-  var db_password string = os.Getenv("DB_PASSWORD")
-
-  a := App{}
-  a.Initialize(db_username, db_password, "go_task_list")
-
+  const (
+    hostname = "localhost"
+    host_port = 5432
+    databasename = "go_task_list"
+  )
+  var username = os.Getenv("DB_USERNAME")
+  var password = os.Getenv("DB_PASSWORD")
 
   port := os.Getenv("PORT")
   if port == "" {
       port = "8080" // Default port if not specified
   }
-  // err := grace.Serve(":" + port, context.ClearHandler(http.DefaultServeMux))
 
-
+    a := App{}
+    a.Initialize(host_port, hostname, username, password, databasename)
 
   a.Run(":" + port)
+
 }

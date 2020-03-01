@@ -1,13 +1,13 @@
 # Installations
 go
-Mysql
+Postgres
 
 # Install
 HTTP request handler:
 go get github.com/gorilla/mux
 
-mysql go driver
-go get github.com/go-sql-driver/mysql
+postgres go driver
+go get -u github.com/lib/pq
 
 Env variables
 go get github.com/joho/godotenv
@@ -27,15 +27,12 @@ source ~/.bash_profile
 ```
 
 Create the database
-$ mysql -u root -p
-Enter mysql pw
-CREATE DATABASE go_task_list;
-USE go_task_list;
-CREATE TABLE tasks (
-   id INT AUTO_INCREMENT PRIMARY KEY,
-   completed BOOLEAN NOT NULL,
-   description VARCHAR(255) NOT NULL
-);
+Postgres:
+$ psql
+jamescape=# CREATE TABLE tasks (
+jamescape(# id serial PRIMARY KEY,
+jamescape(# description VARCHAR(50) NOT NULL,
+jamescape(# completed BOOLEAN NOT NULL);
 
 Env variables:
 "DB_USERNAME", "DB_PASSWORD"
@@ -47,9 +44,6 @@ go build
 ```
 ./task_list
 ```
-Navigate to localhost:8080/tasks
-
-
 
 ## Endpoints Available
 

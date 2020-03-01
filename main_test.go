@@ -16,11 +16,16 @@ import (
 var a App
 
 func TestMain(m *testing.M) {
-  var db_username string = os.Getenv("DB_USERNAME")
-  var db_password string = os.Getenv("DB_PASSWORD")
+  const (
+    hostname = "localhost"
+    host_port = 5432
+    databasename = "go_task_list"
+  )
+  var username = os.Getenv("DB_USERNAME")
+  var password = os.Getenv("DB_PASSWORD")
 
   a = App{}
-  a.Initialize(db_username, db_password, "go_task_list")
+  a.Initialize(host_port, hostname, username, password, databasename)
 
   ensureTableExists()
 
@@ -39,15 +44,15 @@ func ensureTableExists() {
 
 func clearTable() {
   a.DB.Exec("DELETE FROM tasks")
-  a.DB.Exec("ALTER TABLE tasks AUTO_INCREMENT = 1")
+  a.DB.Exec("ALTER SEQUENCE tasks_id_seq RESTART WITH 1")
 }
 
 const tableCreationQuery = `
 CREATE TABLE IF NOT EXISTS tasks
 (
-  id INT AUTO_INCREMENT PRIMARY KEY,
+  id serial PRIMARY KEY,
   completed BOOLEAN NOT NULL,
-  description VARCHAR(255) NOT NULL
+  description VARCHAR(50) NOT NULL
 )`
 
 func executeRequest(req *http.Request) *httptest.ResponseRecorder {
