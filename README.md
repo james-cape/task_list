@@ -6,6 +6,9 @@ This project is written in Go, uses a Postgres database, and is hosted on Heroku
 ## Contributor
 [James Cape](https://github.com/james-cape)
 
+## Project Board
+https://github.com/james-cape/task_list/projects/1
+
 ## Publicly Deployed Links
 Back-End: https://task-list-backend-80224.herokuapp.com/
 
