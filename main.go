@@ -7,10 +7,11 @@ import (
 )
 
 func init() {
-  if os.Getenv("APP_ENV") == "production" {
+  if os.Getenv("DATABASE_URL") != nil {
     log.Print("This environment is production")
   } else if err := godotenv.Load(); err != nil {
     log.Print("No .env file found")
+    log.Print("database url: " + os.Getenv("DATABASE_URL"))
   }
 }
 
@@ -23,10 +24,10 @@ func main() {
   var username = os.Getenv("DB_USERNAME")
   var password = os.Getenv("DB_PASSWORD")
 
-  port := os.Getenv("PORT")
-  if port == "" {
-      port = "8080" // Default port if not specified
-  }
+  // port := os.Getenv("PORT")
+  // if port == "" {
+  //     port = "8080" // Default port if not specified
+  // }
 
     a := App{}
     a.Initialize(host_port, hostname, username, password, databasename)
