@@ -45,6 +45,11 @@ go build
 ./task_list
 ```
 
+
+Creating a go.mod file:
+go mod init github.com/james-cape/task_list
+go mod tidy
+
 ## Endpoints Available
 
 + [Create a Task](#create_task)
