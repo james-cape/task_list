@@ -9,7 +9,7 @@ import (
   "strconv"
 
   "github.com/gorilla/mux"
-  _ "github.com/go-sql-driver/mysql"
+  _ "github.com/lib/pq"
 )
 
 type App struct {
@@ -18,11 +18,13 @@ type App struct {
 }
 
 // Creates the database connection and establishes routes
-func (a *App) Initialize(user, password, dbname string) {
-  connectionString := fmt.Sprintf("%s:%s@/%s", user, password, dbname)
+func (a *App) Initialize(host_port int, hostname, username, password, databasename string) {
+  pg_con_string := fmt.Sprintf("port=%d host=%s user=%s "+
+    "password=%s dbname=%s sslmode=disable",
+    host_port, hostname, username, password, databasename)
 
   var err error
-  a.DB, err = sql.Open("mysql", connectionString)
+  a.DB, err = sql.Open("postgres", pg_con_string)
   if err != nil {
     log.Fatal(err)
   }

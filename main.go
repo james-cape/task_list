@@ -7,17 +7,30 @@ import (
 )
 
 func init() {
-  if err := godotenv.Load(); err != nil {
+  if os.Getenv("APP_ENV") == "production" {
+    log.Print("This environment is production")
+  } else if err := godotenv.Load(); err != nil {
     log.Print("No .env file found")
   }
 }
 
 func main() {
-  var db_username string = os.Getenv("DB_USERNAME")
-  var db_password string = os.Getenv("DB_PASSWORD")
+  const (
+    hostname = "localhost"
+    host_port = 5432
+    databasename = "go_task_list"
+  )
+  var username = os.Getenv("DB_USERNAME")
+  var password = os.Getenv("DB_PASSWORD")
 
-  a := App{}
-  a.Initialize(db_username, db_password, "go_task_list")
+  port := os.Getenv("PORT")
+  if port == "" {
+      port = "8080" // Default port if not specified
+  }
 
-  a.Run(":8080")
+    a := App{}
+    a.Initialize(host_port, hostname, username, password, databasename)
+
+  a.Run(":" + port)
+
 }

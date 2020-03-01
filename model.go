@@ -30,7 +30,7 @@ func (t *task) createTask(db *sql.DB) error {
     return err
   }
 
-  err = db.QueryRow("SELECT LAST_INSERT_ID()").Scan(&t.ID)
+  err = db.QueryRow("SELECT id FROM tasks ORDER BY id DESC LIMIT 1").Scan(&t.ID)
 
   if err != nil {
     return err
