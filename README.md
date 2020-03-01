@@ -152,7 +152,7 @@ $ heroku config:get DATABASE_URL -a task-list-backend-80224
 ```
 The above command will provide your production environment variable information:
 
-`postgres://<username>:<password>@<hostname/server>/<databasename>``
+`postgres://<username>:<password>@<hostname/server>/<databasename>`
 
 Navigate to https://dashboard.heroku.com/apps/task-list-backend-80224 > Settings > Reveal Config Vars and fill in the following Config Vars:
 * DATABASE_URL
