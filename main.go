@@ -9,18 +9,21 @@ import (
 func init() {
   if os.Getenv("DATABASE_URL") != "" {
     log.Print("This environment is production")
+    log.Print("database url: " + os.Getenv("DATABASE_URL"))
   } else if err := godotenv.Load(); err != nil {
     log.Print("No .env file found")
-    log.Print("database url: " + os.Getenv("DATABASE_URL"))
   }
 }
 
 func main() {
-  const (
-    hostname = "localhost"
-    host_port = 5432
-    databasename = "go_task_list"
-  )
+  // const (
+    // hostname = "localhost"
+    // host_port = 5432
+    // databasename = "go_task_list"
+  // )
+  var hostname = os.Getenv("DB_HOSTNAME")
+  var host_port = os.Getenv("DB_SERVER")
+  var databasename = os.Getenv("DB_NAME")
   var username = os.Getenv("DB_USERNAME")
   var password = os.Getenv("DB_PASSWORD")
 
