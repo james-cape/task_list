@@ -33,6 +33,11 @@ func (a *App) Initialize(host_port int, hostname, username, password, databasena
   a.initializeRoutes()
 }
 
+// Enable communication to front end
+func enableCors(w *http.ResponseWriter) {
+	(*w).Header().Set("Access-Control-Allow-Origin", "*")
+}
+
 // Starts the application
 func (a * App) Run(addr string) {
   log.Fatal(http.ListenAndServe(addr, a.Router))
@@ -84,6 +89,7 @@ func (a *App) getTask(w http.ResponseWriter, r *http.Request) {
 }
 
 func (a *App) getTasks(w http.ResponseWriter, r *http.Request) {
+  enableCors(&w)
   tasks, err := getTasks(a.DB)
   if err != nil {
     respondWithError(w, http.StatusInternalServerError, err.Error())
