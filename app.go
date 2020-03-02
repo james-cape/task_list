@@ -7,8 +7,8 @@ import (
   "encoding/json"
   "net/http"
   "strconv"
-
   "github.com/gorilla/mux"
+  "github.com/gorilla/handlers"
   _ "github.com/lib/pq"
 )
 
@@ -30,6 +30,12 @@ func (a *App) Initialize(host_port int, hostname, username, password, databasena
   }
 
   a.Router = mux.NewRouter()
+
+  // router := mux.NewRouter()
+
+
+
+
   a.initializeRoutes()
 }
 
@@ -40,7 +46,10 @@ func enableCors(w *http.ResponseWriter) {
 
 // Starts the application
 func (a * App) Run(addr string) {
-  log.Fatal(http.ListenAndServe(addr, a.Router))
+  headers := handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Authorization"})
+  methods := handlers.AllowedMethods([]string{"GET", "POST", "PUT", "DELETE"})
+  origins := handlers.AllowedOrigins([]string{"*"})
+  log.Fatal(http.ListenAndServe(addr, handlers.CORS(headers, methods, origins)(a.Router)))
 }
 
 // Routes
