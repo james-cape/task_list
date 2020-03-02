@@ -23,7 +23,7 @@ func (t *task) deleteTask(db *sql.DB) error {
 }
 
 func (t *task) createTask(db *sql.DB) error {
-  statement := fmt.Sprintf("INSERT INTO tasks(description, completed) VALUES('%s', %t)", t.Description, t.Completed)
+  statement := fmt.Sprintf("INSERT INTO tasks(description, completed) VALUES('%s', %t)", t.Description, false)
   _, err := db.Exec(statement)
 
   if err != nil {
