@@ -67,6 +67,7 @@ func respondWithJSON(w http.ResponseWriter, code int, payload interface{}) {
 
 // Controllers
 func (a *App) getTask(w http.ResponseWriter, r *http.Request) {
+  enableCors(&w)
   vars := mux.Vars(r)
   id, err := strconv.Atoi(vars["id"])
   if err != nil {
@@ -100,6 +101,7 @@ func (a *App) getTasks(w http.ResponseWriter, r *http.Request) {
 }
 
 func (a *App) createTask(w http.ResponseWriter, r *http.Request) {
+  enableCors(&w)
   var t task
   decoder := json.NewDecoder(r.Body)
   if err := decoder.Decode(&t); err != nil {
@@ -117,6 +119,7 @@ func (a *App) createTask(w http.ResponseWriter, r *http.Request) {
 }
 
 func (a *App) updateTask(w http.ResponseWriter, r *http.Request) {
+  enableCors(&w)
   vars := mux.Vars(r)
   id, err := strconv.Atoi(vars["id"])
   if err != nil {
@@ -142,6 +145,7 @@ func (a *App) updateTask(w http.ResponseWriter, r *http.Request) {
 }
 
 func (a *App) deleteTask(w http.ResponseWriter, r *http.Request) {
+  enableCors(&w)
   vars := mux.Vars(r)
   id, err := strconv.Atoi(vars["id"])
   if err != nil {
