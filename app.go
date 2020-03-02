@@ -7,8 +7,8 @@ import (
   "encoding/json"
   "net/http"
   "strconv"
-
   "github.com/gorilla/mux"
+  "github.com/gorilla/handlers"
   _ "github.com/lib/pq"
 )
 
@@ -30,12 +30,26 @@ func (a *App) Initialize(host_port int, hostname, username, password, databasena
   }
 
   a.Router = mux.NewRouter()
+
+  // router := mux.NewRouter()
+
+
+
+
   a.initializeRoutes()
+}
+
+// Enable communication to front end
+func enableCors(w *http.ResponseWriter) {
+	(*w).Header().Set("Access-Control-Allow-Origin", "*")
 }
 
 // Starts the application
 func (a * App) Run(addr string) {
-  log.Fatal(http.ListenAndServe(addr, a.Router))
+  headers := handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Authorization"})
+  methods := handlers.AllowedMethods([]string{"GET", "POST", "PUT", "DELETE"})
+  origins := handlers.AllowedOrigins([]string{"*"})
+  log.Fatal(http.ListenAndServe(addr, handlers.CORS(headers, methods, origins)(a.Router)))
 }
 
 // Routes
@@ -62,6 +76,7 @@ func respondWithJSON(w http.ResponseWriter, code int, payload interface{}) {
 
 // Controllers
 func (a *App) getTask(w http.ResponseWriter, r *http.Request) {
+  enableCors(&w)
   vars := mux.Vars(r)
   id, err := strconv.Atoi(vars["id"])
   if err != nil {
@@ -84,6 +99,7 @@ func (a *App) getTask(w http.ResponseWriter, r *http.Request) {
 }
 
 func (a *App) getTasks(w http.ResponseWriter, r *http.Request) {
+  enableCors(&w)
   tasks, err := getTasks(a.DB)
   if err != nil {
     respondWithError(w, http.StatusInternalServerError, err.Error())
@@ -94,6 +110,7 @@ func (a *App) getTasks(w http.ResponseWriter, r *http.Request) {
 }
 
 func (a *App) createTask(w http.ResponseWriter, r *http.Request) {
+  enableCors(&w)
   var t task
   decoder := json.NewDecoder(r.Body)
   if err := decoder.Decode(&t); err != nil {
@@ -111,6 +128,7 @@ func (a *App) createTask(w http.ResponseWriter, r *http.Request) {
 }
 
 func (a *App) updateTask(w http.ResponseWriter, r *http.Request) {
+  enableCors(&w)
   vars := mux.Vars(r)
   id, err := strconv.Atoi(vars["id"])
   if err != nil {
@@ -136,6 +154,7 @@ func (a *App) updateTask(w http.ResponseWriter, r *http.Request) {
 }
 
 func (a *App) deleteTask(w http.ResponseWriter, r *http.Request) {
+  enableCors(&w)
   vars := mux.Vars(r)
   id, err := strconv.Atoi(vars["id"])
   if err != nil {
