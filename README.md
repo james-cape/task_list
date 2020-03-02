@@ -12,7 +12,7 @@ https://github.com/james-cape/task_list/projects/1
 ## Publicly Deployed Links
 Back-End: https://task-list-backend-80224.herokuapp.com/
 
-Front-End: TBD
+Front-End: https://james-cape.github.io/task-list-frontend/
 
 ## Local Setup
 ### System Dependencies
